@@ -1,5 +1,19 @@
 import pygame as pg
 
+def animate_cpu():
+    global cpu_speed
+    cpu.y += cpu_speed
+
+    if ball.centery <= cpu.centery:
+        cpu_speed = -6
+    if ball.centery >= cpu.centery:
+        cpu_speed = 6
+
+    if cpu.top <= 0:
+        cpu.top = 0
+    if cpu.bottom >= HEIGHT:
+        cpu.bottom = HEIGHT
+        
 def animate_player():
     player.y += player_speed
     
@@ -37,6 +51,7 @@ player.midright = (WIDTH, HEIGHT // 2)
 ball_speed_x = 6
 ball_speed_y = 6
 player_speed = 0
+cpu_speed = 6
 
 running = True 
 while running:
@@ -56,7 +71,7 @@ while running:
 
     animate_ball()
     animate_player()
-
+    animate_cpu()
     screen.fill('black')
     pg.draw.aaline(screen, 'white', (WIDTH // 2, 0), (WIDTH // 2, HEIGHT))
     pg.draw.ellipse(screen,'white', ball) 
