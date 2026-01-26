@@ -1,4 +1,19 @@
 import pygame as pg
+import random 
+
+def reset_ball():
+    global ball_speed_x, ball_speed_y
+    ball.x = WIDTH // 2 - 2
+    ball.y = random.randint(10,100)
+    ball_speed_x *= random.choice([1, -1])
+    ball_speed_y *= random.choice([1, -1])
+
+def point_won(winner):
+    global cpu_points, player_points
+    if winner == 'cpu':
+        cpu_points += 1
+    if winner == 'player':
+        player_points += 1 
 
 def animate_cpu():
     global cpu_speed
@@ -22,6 +37,7 @@ def animate_player():
     
     if player.bottom >= HEIGHT:
         player.bottom = HEIGHT
+
 def animate_ball():
         global ball_speed_x, ball_speed_y
         ball.x += ball_speed_x
@@ -30,9 +46,17 @@ def animate_ball():
         if ball.top >= HEIGHT or ball.bottom <= 0:
             ball_speed_y *= -1
 
-        if ball.left >= WIDTH or ball.right <= 0:
-            ball_speed_x *= -1
+        if ball.left >= WIDTH:
+            point_won('cpu')
+            reset_ball()
+            
+        if ball.right <= 0:
+            point_won('player')
+            reset_ball()
 
+        if ball.colliderect(player) or ball.colliderect(cpu):
+            ball_speed_x *= -1
+         
 pg.init()
 
 WIDTH, HEIGHT = 800, 600
@@ -53,6 +77,10 @@ ball_speed_y = 6
 player_speed = 0
 cpu_speed = 6
 
+cpu_points, player_points = 0, 0
+
+score_font = pg.font.Font(None, 74)
+
 running = True 
 while running:
     for event in pg.event.get():
@@ -72,7 +100,13 @@ while running:
     animate_ball()
     animate_player()
     animate_cpu()
+    
     screen.fill('black')
+    cpu_score = score_font.render(str(cpu_points), True, 'white')
+    player_score = score_font.render(str(player_points), True, 'white')
+    screen.blit(cpu_score, (WIDTH // 4, 10))
+    screen.blit(player_score, (WIDTH * 3 // 4, 10))
+
     pg.draw.aaline(screen, 'white', (WIDTH // 2, 0), (WIDTH // 2, HEIGHT))
     pg.draw.ellipse(screen,'white', ball) 
     pg.draw.rect(screen, 'white', cpu)
