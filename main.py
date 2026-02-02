@@ -1,13 +1,14 @@
 import pygame as pg
 import random 
-
+#reset ball to center
 def reset_ball():
-    global ball_speed_x, ball_speed_y
-    ball.x = WIDTH // 2 - 2
-    ball.y = random.randint(10,100)
-    ball_speed_x *= random.choice([1, -1])
-    ball_speed_y *= random.choice([1, -1])
+    global ball_speed_x, ball_speed_y #access to make changes
+    ball.x = WIDTH // 2 - 2 #center ball
+    ball.y = random.randint(10,100) 
+    ball_speed_x *= random.choice([1, -1]) 
+    ball_speed_y *= random.choice([1, -1]) 
 
+#update points
 def point_won(winner):
     global cpu_points, player_points
     if winner == 'cpu':
@@ -18,7 +19,7 @@ def point_won(winner):
 def animate_cpu():
     global cpu_speed
     cpu.y += cpu_speed
-
+    
     if ball.centery <= cpu.centery:
         cpu_speed = -6
     if ball.centery >= cpu.centery:
@@ -32,16 +33,18 @@ def animate_cpu():
 def animate_player():
     player.y += player_speed
     
+    #keep player on screen
     if player.top <= 0:
         player.top = 0
     
+    #don't go off bottom
     if player.bottom >= HEIGHT:
         player.bottom = HEIGHT
 
 def animate_ball():
         global ball_speed_x, ball_speed_y
-        ball.x += ball_speed_x
-        ball.y += ball_speed_y
+        ball.x += ball_speed_x #6 pixels per frame
+        ball.y += ball_speed_y #6 pixels per frame
 
         if ball.top >= HEIGHT or ball.bottom <= 0:
             ball_speed_y *= -1
@@ -86,11 +89,13 @@ while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
+        #when pressing key
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
                 player_speed = -6
             if event.key == pg.K_DOWN:
                 player_speed = 6
+        #when releasing key
         if event.type == pg.KEYUP:
             if event.key == pg.K_UP:
                 player_speed = 0
@@ -107,6 +112,7 @@ while running:
     screen.blit(cpu_score, (WIDTH // 4, 10))
     screen.blit(player_score, (WIDTH * 3 // 4, 10))
 
+    #draw objects
     pg.draw.aaline(screen, 'white', (WIDTH // 2, 0), (WIDTH // 2, HEIGHT))
     pg.draw.ellipse(screen,'white', ball) 
     pg.draw.rect(screen, 'white', cpu)
