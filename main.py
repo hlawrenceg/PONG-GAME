@@ -20,14 +20,14 @@ def point_won(winner):
 def animate_cpu():
     global cpu_speed
     
-    # NYTT: SJEKKER OM SPILLET ER AI ELLER 2 PLAYER
+    #SJEKKER OM SPILLET ER AI ELLER 2 PLAYER
     if game_mode == 'ai':
         if ball.centery <= cpu.centery:
             cpu_speed = -6
         if ball.centery >= cpu.centery:
             cpu_speed = 6
     else:
-        # NYTT: CPU STYRES AV PLAYER 2 I 2 PLAYER MODE
+        #CPU STYRES AV PLAYER 2 I 2 PLAYER MODE
         cpu_speed = player2_speed
 
     cpu.y += cpu_speed
@@ -60,7 +60,7 @@ def animate_ball():
             point_won('cpu')
             reset_ball()
             
-        if ball.right <= 0:
+        if ball.right <= 0: 
             point_won('player')
             reset_ball()
 
@@ -87,10 +87,10 @@ ball_speed_y = 6
 player_speed = 0
 cpu_speed = 6
 
-# NYTT: SPEED FOR PLAYER 2
+#SPEED FOR PLAYER 2
 player2_speed = 0
 
-# NYTT: GAME MODE (AI ELLER 2 PLAYER)
+#GAME MODE (AI ELLER 2 PLAYER)
 game_mode = 'ai'
 
 cpu_points, player_points = 0, 0
@@ -106,18 +106,17 @@ while running:
         #when pressing key
         if event.type == pg.KEYDOWN:
 
-            # NYTT: BYTT MELLOM AI OG 2 PLAYER
+            #BYTT MELLOM AI OG 2 PLAYER
             if event.key == pg.K_1:
                 game_mode = 'ai'
             if event.key == pg.K_2:
                 game_mode = 'pvp'
-
             if event.key == pg.K_UP:
                 player_speed = -6
             if event.key == pg.K_DOWN:
                 player_speed = 6
 
-            # NYTT: PLAYER 2 KONTROLLER (W / S)
+            #PLAYER 2 KONTROLLER (W / S)
             if event.key == pg.K_w:
                 player2_speed = -6
             if event.key == pg.K_s:
@@ -130,7 +129,7 @@ while running:
             if event.key == pg.K_DOWN:
                 player_speed = 0
 
-            # NYTT: STOPPER PLAYER 2 NÅR KNAPP SLIPPES
+            #STOPPER PLAYER 2 NÅR KNAPP SLIPPES
             if event.key == pg.K_w or event.key == pg.K_s:
                 player2_speed = 0     
 
